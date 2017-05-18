@@ -1,0 +1,27 @@
+<div style="text-align: center;">
+	<br><br><br><br>
+	<select name="category" ng-model="main.searchtype">
+		<option value="" disabled>Select Search Type</option>
+		<option value="title">Title</option>
+		<option value="director">Director</option>
+		<option value="actor">Actor</option>
+	</select>
+	<input type="text" name="searchparam" ng-model="main.searchparam">
+	<button class="btn btn-sm" ng-click="main.search()">Search Netflix</button>
+</div>
+
+<div>
+	<br>
+	<div ng-if="main.searchresults" style="text-align: center;">Sort Data: <i ng-click="sort('release_year')">Release Year</i> | <i  ng-click="sort('rating')">Rating</i> | <i  ng-click="sort('show_title')">Title</i></div>
+	<br>
+	<div ng-repeat="result in main.searchresults | orderBy:sortKey:reverse | limitTo : totalDisplayed">
+		<br>Title: {{result.show_title}}
+		<br>Rating: {{result.rating}}
+		<br>Release Year: {{result.release_year}}
+		<br>Director: <a href="#" ng-click="main.searchDirector(result.director)">{{result.director}}</a>
+		<br>Actors: <div ng-repeat="actor in result.show_cast.split(', ')"><a href="#" ng-click="main.searchActor(actor)">{{actor}}</a></div>
+		<br><img src="{{result.poster}}" style="height: 300px; width: 300px;">
+	</div>
+	<div ng-if="remainItems>0" style="text-align:center"><button class="btn btn-default" ng-click="loadMore()">Load more</button></div>
+	<div ng-if="remainItems<0" style="text-align:center">No more results.</div><br>
+</div>
